@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  psqldb:
+    image: postgres:13
+    restart: always
+    ports:
+      - "12121:5432"
+    environment:
+      POSTGRES_PASSWORD: test
+      POSTGRES_USER: test
+      POSTGRES_DB: tested
+    networks:
+      - net123
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: test@mail.ru
+      PGADMIN_DEFAULT_PASSWORD: test
+    ports:
+      - "12122:80"
+    networks:
+      - net123
+  rabbit:
+    image: rabbitmq:3-management
+    restart: always
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "test"
+      RABBITMQ_DEFAULT_PASS: "test"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - 12123:5672
+      - 12124:15672
+networks:
+  net123:
+    driver: bridge
